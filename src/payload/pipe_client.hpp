@@ -1,0 +1,37 @@
+// (c) Alexander 'xaitax' Hagenah
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
+#pragma once
+
+#include <string>
+#include "../core/common.hpp"
+
+namespace Payload {
+
+    class PipeClient {
+    public:
+        explicit PipeClient(const std::wstring& pipeName);
+        ~PipeClient();
+
+        bool IsValid() const { return m_hPipe != INVALID_HANDLE_VALUE; }
+
+        void Log(const std::string& msg);
+        void LogDebug(const std::string& msg);
+        void LogData(const std::string& key, const std::string& value);
+        void Flush();
+        HANDLE GetHandle() const { return m_hPipe; }
+
+        struct Config {
+            bool        verbose;
+            bool        fingerprint;
+            std::string outputPath;
+            std::string browserType;
+            std::string browserVersion;
+        };
+        Config ReadConfig();
+
+    private:
+        HANDLE m_hPipe;
+    };
+
+} // namespace Payload
